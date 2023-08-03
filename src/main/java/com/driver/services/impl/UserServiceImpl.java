@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
             throw new Exception("Country not found");
         }
         c.setUser(user);
-        user.setCountry(c);
+        user.setOriginalCountry(c);
         user.setMaskedIp(null);
         user.setConnected(false);
 

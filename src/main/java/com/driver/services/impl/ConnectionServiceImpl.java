@@ -32,7 +32,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         if(user.getConnected()){
             throw new Exception("Already connected");
         }
-        else if(user.getCountry().getCountryName().toString().equals(countryName)){
+        else if(user.getOriginalCountry().getCountryName().toString().equals(countryName)){
             return user;
         }
         else{
@@ -100,7 +100,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         String countryName="";
         if(receiver.getMaskedIp() != null){
             String countryCode = receiver.getMaskedIp().substring(0,3); 
-            if(countryCode.equals(sender.getCountry().getCode())){
+            if(countryCode.equals(sender.getOriginalCountry().getCode())){
                 return sender;
             }
             else{
@@ -117,10 +117,10 @@ public class ConnectionServiceImpl implements ConnectionService {
             }
         }
         else{
-            if(receiver.getCountry().equals(sender.getCountry())){
+            if(receiver.getOriginalCountry().equals(sender.getOriginalCountry())){
                 return sender;
             }
-            countryName = receiver.getCountry().getCountryName().toString();
+            countryName = receiver.getOriginalCountry().getCountryName().toString();
 
     }
     User newUser =  connect(senderId,countryName);
