@@ -14,13 +14,13 @@ import javax.persistence.OneToMany;
 public class Admin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
+    private int id;
 
-    String username;
-    String password;
+    private String username;
+    private String password;
 
      @OneToMany(mappedBy = "admin",cascade = CascadeType.ALL)
-    List<ServiceProvider> serviceProviders=new ArrayList<>();
+     private List<ServiceProvider> serviceProviders=new ArrayList<>();
 
     public int getId() {
         return id;

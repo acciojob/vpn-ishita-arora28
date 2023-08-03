@@ -17,22 +17,22 @@ import javax.persistence.OneToMany;
 public class ServiceProvider {
      @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
+    private int id;
 
-    String name;
+    private String name;
 
     @ManyToOne
     @JoinColumn
-    Admin admin;
+    private Admin admin;
 
     @ManyToMany(mappedBy = "serviceProviderList", cascade = CascadeType.ALL)
-    List<User> users=new ArrayList<>();
+    private List<User> users=new ArrayList<>();
 
     @OneToMany(mappedBy = "serviceProvider", cascade = CascadeType.ALL)
-    List<Connection> conectionList=new ArrayList<>();
+    private List<Connection> conectionList=new ArrayList<>();
 
     @OneToMany(mappedBy = "serviceProvider", cascade = CascadeType.ALL)
-    List<Country> countryList=new ArrayList<>();
+    private List<Country> countryList=new ArrayList<>();
 
     public ServiceProvider(){
 
