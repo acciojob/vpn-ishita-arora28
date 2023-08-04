@@ -8,9 +8,6 @@ import com.driver.repository.CountryRepository;
 import com.driver.repository.ServiceProviderRepository;
 import com.driver.repository.UserRepository;
 import com.driver.services.UserService;
-
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,49 +23,47 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User register(String username, String password, String countryName) throws Exception{
- //create a user of given country. 
- //The originalIp of the user should be "countryCode.userId" and return the user.
- // Note that right now user is not connected and thus connected would be false and maskedIp would be null
+        //create a user of given country. The originalIp of the user should be "countryCode.userId" and return the user.
+        // Note that right now user is not connected and thus connected would be false and maskedIp would be null
         //Note that the userId is created automatically by the repository layer
-        
-        User user =new User();
-        Country c=new Country();
+        User user = new User();
+        Country country = new Country();
+
         user.setUsername(username);
         user.setPassword(password);
 
-        countryName=countryName.toUpperCase();
-        if(countryName.equals("IND") || countryName.equals("AUS") || countryName.equals("USA") || countryName.equals("CHI") || countryName.equals("JPN")){
-            c.setCountryName(CountryName.valueOf(countryName));
-            c.setCode(CountryName.valueOf(countryName).toCode());
-
-        }
-        else{
+        countryName = countryName.toUpperCase();
+        if(countryName.equals("IND") || countryName.equals("AUS") || countryName.equals("USA") || countryName.equals("CHI") || countryName.equals("JPN")) {
+            country.setCountryName(CountryName.valueOf(countryName));
+            country.setCode(CountryName.valueOf(countryName).toCode());
+        } else {
             throw new Exception("Country not found");
         }
-        c.setUser(user);
-        user.setOriginalCountry(c);
-        user.setMaskedIp(null);
-        user.setConnected(false);
 
-        user.setOriginalIp(c.getCode()+"."+userRepository3.save(user).getId());
+        country.setUser(user);
+        user.setOriginalCountry(country);
+        user.setMaskedIp(null);
+        user.setConnected(Boolean.FALSE);
+
+
+        user.setOriginalIp(country.getCode()+"."+userRepository3.save(user).getId());
+
         userRepository3.save(user);
+
         return user;
-        
     }
 
     @Override
     public User subscribe(Integer userId, Integer serviceProviderId) {
-        //subscribe to the serviceProvider by adding it to the list of providers and return updated User
-        //ServiceProvider serviceProvider=new ServiceProvider();
-        User user=userRepository3.findById(userId).get();
-        List<ServiceProvider> listOfProviders=user.getServiceProviderList();
-        ServiceProvider currServiceProvider=serviceProviderRepository3.findById(serviceProviderId).get();
+        User user = userRepository3.findById(userId).get();
 
-        listOfProviders.add(currServiceProvider);
-        user.setServiceProviderList(listOfProviders);
-        userRepository3.save(user);
+        ServiceProvider serviceProvider = serviceProviderRepository3.findById(serviceProviderId).get();
+
+        user.getServiceProviderList().add(serviceProvider);
+        serviceProvider.getUsers().add(user);
+
+        serviceProviderRepository3.save(serviceProvider);
 
         return user;
-
     }
 }

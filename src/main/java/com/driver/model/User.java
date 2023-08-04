@@ -1,12 +1,13 @@
 package com.driver.model;
 
-
+import org.springframework.data.annotation.Id;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "USERS")
 public class User {
 
     @Id
